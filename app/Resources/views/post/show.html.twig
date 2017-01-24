@@ -33,6 +33,20 @@
                 <th>Dateupdated</th>
                 <td>{% if post.dateUpdated %}{{ post.dateUpdated|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
+        <tr>
+            <th>categories</th>
+            {% for category in post.Categories %}
+                <td>{{ category.title }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>
+                Image
+            </th>
+            <td>
+                {% if post.files %}{{ post.files }}{%  endif %}
+            </td>
+        </tr>
         </tbody>
     </table>
 

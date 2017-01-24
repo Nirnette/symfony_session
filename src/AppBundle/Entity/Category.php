@@ -47,6 +47,10 @@ class Category
      */
     private $posts;
 
+    public function __construct(){
+
+    }
+
 
     /**
      * Get id
@@ -129,4 +133,5 @@ class Category
     {
         return $this->public;
     }
+
 }

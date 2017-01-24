@@ -1,0 +1,25 @@
+{{ form_start(form) }}
+<div class="form-group">
+    <label for="title">Titre</label>
+    {{ form_errors(form.title, {'attr':  {'class': 'error dsds'}}) }}
+    {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+    <label for="content">Contenu</label>
+    {{ form_errors(form.content, {'attr':  {'class': 'error dsds'}}) }}
+    {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+    <label for="public">Visible</label>
+    {{ form_errors(form.public, {'attr':  {'class': 'error dsds'}}) }}
+    {{ form_widget(form.public, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+    <label for="categories">Catégories</label>
+    {{ form_errors(form.categories, {'attr':  {'class': 'error dsds'}}) }}
+    {{ form_widget(form.categories, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+
+<input type="submit" value="Create" />
+{{ form_end(form) }}

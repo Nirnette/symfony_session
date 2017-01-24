@@ -5,6 +5,8 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Post
@@ -26,14 +28,15 @@ class Post
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
 
     /**
      * @var string
-     * @Assert\NotBlank()
+     *
+     * @Gedmo\Slug(fields={"title"}, updatable=true, separator="_")
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
      */
     private $slug;
@@ -72,6 +75,14 @@ class Post
      *
      */
     private $categories;
+
+    public $files;
+
+    /**
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="Upload", cascade={"remove", "persist"})
+     */
+    private $uploads;
 
 
     /**
@@ -281,5 +292,39 @@ class Post
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    /**
+     * Add upload
+     *
+     * @param \AppBundle\Entity\Upload $upload
+     *
+     * @return Post
+     */
+    public function addUpload(\AppBundle\Entity\Upload $upload)
+    {
+        $this->uploads[] = $upload;
+
+        return $this;
+    }
+
+    /**
+     * Remove upload
+     *
+     * @param \AppBundle\Entity\Upload $upload
+     */
+    public function removeUpload(\AppBundle\Entity\Upload $upload)
+    {
+        $this->uploads->removeElement($upload);
+    }
+
+    /**
+     * Get uploads
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUploads()
+    {
+        return $this->uploads;
     }
 }

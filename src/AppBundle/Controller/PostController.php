@@ -44,6 +44,16 @@ class PostController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $images = $form->get('files')->getData();
+
+            if ($images){
+                $uploads = $this->get('file.manager.image')->upload(
+                    array($images),
+                        'post');
+            }
+
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
             $em->flush($post);

@@ -2,8 +2,11 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Post
@@ -25,7 +28,7 @@ class Post
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
@@ -33,6 +36,7 @@ class Post
     /**
      * @var string
      *
+     * @Gedmo\Slug(fields={"title"}, updatable=true, separator="_")
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
      */
     private $slug;
@@ -65,10 +69,20 @@ class Post
      */
     private $dateUpdated;
 
+
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Category ", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="posts")
+     *
      */
     private $categories;
+
+    private $files;
+
+    /**
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="Upload", cascade={"remove", "persist"})
+     */
+    private $uploads;
 
 
     /**
@@ -77,6 +91,7 @@ class Post
     public function __construct()
     {
         $this->setDateCreated(new \DateTime('now'));
+        $this->categories= new ArrayCollection();
     }
 
 
@@ -252,7 +267,7 @@ class Post
      *
      * @return Post
      */
-    public function addCategory(\AppBundle\Entity\Category $category)
+    public function addCategory(Category $category)
     {
         $this->categories[] = $category;
 
@@ -264,7 +279,7 @@ class Post
      *
      * @param \AppBundle\Entity\Category  $category
      */
-    public function removeCategory(\AppBundle\Entity\Category $category)
+    public function removeCategory(Category $category)
     {
         $this->categories->removeElement($category);
     }
